@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="810" viewBox="0 0 1440 810" role="img" aria-labelledby="title desc">
+  <title id="title">Kiến trúc Khoan Chuyển</title>
+  <desc id="desc">Luồng riêng tư từ trình duyệt qua Cloud Run đến Vertex AI Gemini, không lưu nội dung.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0e0f0c"/><stop offset="1" stop-color="#163300"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="16" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#9fe870"/></marker>
+  </defs>
+  <rect width="1440" height="810" fill="url(#bg)"/>
+  <g opacity=".07" stroke="#fff"><path d="M0 90H1440M0 180H1440M0 270H1440M0 360H1440M0 450H1440M0 540H1440M0 630H1440M0 720H1440"/><path d="M120 0V810M240 0V810M360 0V810M480 0V810M600 0V810M720 0V810M840 0V810M960 0V810M1080 0V810M1200 0V810M1320 0V810"/></g>
+  <text x="80" y="92" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="48" font-weight="800">Khoan Chuyển — kiến trúc an toàn</text>
+  <text x="80" y="137" fill="#cbd5c5" font-family="Inter,Arial,sans-serif" font-size="22">Gemini phân tích tín hiệu rủi ro; ứng dụng không lưu nội dung người dùng.</text>
+  <g fill="none" stroke="#9fe870" stroke-width="6" marker-end="url(#arrow)"><path d="M355 390H515"/><path d="M885 390H1045"/></g>
+  <g filter="url(#shadow)" font-family="Inter,Arial,sans-serif">
+    <g><rect x="80" y="250" width="275" height="280" rx="30" fill="#f7f7f2"/><circle cx="150" cy="320" r="35" fill="#9fe870"/><text x="150" y="331" text-anchor="middle" font-size="30">📱</text><text x="125" y="395" fill="#0e0f0c" font-size="28" font-weight="800">Trình duyệt</text><text x="125" y="435" fill="#5f615f" font-size="17">Dán mô tả đáng ngờ</text><text x="125" y="468" fill="#5f615f" font-size="17">Nhận thẻ “tạm dừng”</text><text x="125" y="501" fill="#5f615f" font-size="17">Chia sẻ không kèm bản gốc</text></g>
+    <g><rect x="515" y="210" width="370" height="360" rx="30" fill="#fff"/><rect x="550" y="250" width="110" height="34" rx="17" fill="#e2f6d5"/><text x="605" y="273" text-anchor="middle" fill="#163300" font-size="15" font-weight="800">CLOUD RUN</text><text x="560" y="345" fill="#0e0f0c" font-size="30" font-weight="800">Go service</text><text x="560" y="393" fill="#5f615f" font-size="17">• Giới hạn payload 64 KiB</text><text x="560" y="428" fill="#5f615f" font-size="17">• Structured JSON schema</text><text x="560" y="463" fill="#5f615f" font-size="17">• Runtime identity, không API key</text><text x="560" y="498" fill="#5f615f" font-size="17">• Không database / không log nội dung</text><rect x="560" y="520" width="275" height="3" fill="#9fe870"/></g>
+    <g><rect x="1045" y="250" width="315" height="280" rx="30" fill="#f7f7f2"/><circle cx="1115" cy="320" r="35" fill="#9fe870"/><text x="1115" y="331" text-anchor="middle" font-size="30">✦</text><text x="1090" y="395" fill="#0e0f0c" font-size="28" font-weight="800">Vertex AI</text><text x="1090" y="435" fill="#5f615f" font-size="17">Gemini 2.5 Flash</text><text x="1090" y="468" fill="#5f615f" font-size="17">Tín hiệu + bước xác minh</text><text x="1090" y="501" fill="#5f615f" font-size="17">Không phán quyết tội phạm</text></g>
+  </g>
+  <g font-family="Inter,Arial,sans-serif"><rect x="310" y="650" width="820" height="82" rx="24" fill="#9fe870"/><text x="720" y="685" text-anchor="middle" fill="#163300" font-size="21" font-weight="800">RANH GIỚI RIÊNG TƯ</text><text x="720" y="716" text-anchor="middle" fill="#163300" font-size="18">Không mật khẩu · Không OTP · Không số tài khoản đầy đủ · Không lưu tin nhắn</text></g>
+</svg>

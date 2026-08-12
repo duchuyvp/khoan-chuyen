@@ -67,7 +67,15 @@ func newHandler(a analyzer) http.Handler {
 		panic(err)
 	}
 	mux.Handle("GET /", http.FileServer(http.FS(staticRoot)))
+	mux.HandleFunc("GET /readyz", func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+		w.Write([]byte("ok\n"))
+	})
 	mux.HandleFunc("POST /api/analyze", func(w http.ResponseWriter, r *http.Request) {
+		if !strings.HasPrefix(strings.ToLower(r.Header.Get("Content-Type")), "application/json") {
+			http.Error(w, `{"error":"Content-Type phải là application/json"}`, http.StatusUnsupportedMediaType)
+			return
+		}
 		var input analyzeRequest
 		if err := json.NewDecoder(http.MaxBytesReader(w, r.Body, 64<<10)).Decode(&input); err != nil || strings.TrimSpace(input.Text) == "" {
 			http.Error(w, `{"error":"Vui lòng nhập nội dung cần kiểm tra"}`, http.StatusBadRequest)
@@ -82,7 +90,17 @@ func newHandler(a analyzer) http.Handler {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		json.NewEncoder(w).Encode(card)
 	})
-	return mux
+	return securityHeaders(mux)
+}
+
+func securityHeaders(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Security-Policy", "default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; script-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+		w.Header().Set("Referrer-Policy", "no-referrer")
+		w.Header().Set("X-Content-Type-Options", "nosniff")
+		w.Header().Set("X-Frame-Options", "DENY")
+		next.ServeHTTP(w, r)
+	})
 }
 
 func selectAnalyzer(apiKey string) analyzer {

@@ -82,3 +82,50 @@ func TestAnalyzerSelectionPrefersVertexRuntimeIdentity(t *testing.T) {
 		t.Fatalf("expected keyless Vertex analyzer, got %#v", a)
 	}
 }
+
+func TestReadyEndpointReportsReadyWithoutCallingAnalyzer(t *testing.T) {
+	res := httptest.NewRecorder()
+	newHandler(demoAnalyzer{}).ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/readyz", nil))
+
+	if res.Code != http.StatusOK || strings.TrimSpace(res.Body.String()) != "ok" {
+		t.Fatalf("status = %d, body = %q", res.Code, res.Body.String())
+	}
+}
+
+func TestResponsesIncludeBrowserSecurityHeaders(t *testing.T) {
+	res := httptest.NewRecorder()
+	newHandler(demoAnalyzer{}).ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/", nil))
+
+	for header, want := range map[string]string{
+		"Content-Security-Policy": "default-src 'self'",
+		"Referrer-Policy":         "no-referrer",
+		"X-Content-Type-Options":  "nosniff",
+		"X-Frame-Options":         "DENY",
+	} {
+		if got := res.Header().Get(header); !strings.Contains(got, want) {
+			t.Errorf("%s = %q, want it to contain %q", header, got, want)
+		}
+	}
+}
+
+func TestAnalyzeRejectsNonJSONRequests(t *testing.T) {
+	req := httptest.NewRequest(http.MethodPost, "/api/analyze", strings.NewReader(`{"text":"test"}`))
+	req.Header.Set("Content-Type", "text/plain")
+	res := httptest.NewRecorder()
+	newHandler(demoAnalyzer{}).ServeHTTP(res, req)
+
+	if res.Code != http.StatusUnsupportedMediaType {
+		t.Fatalf("status = %d, want %d", res.Code, http.StatusUnsupportedMediaType)
+	}
+}
+
+func TestHomePageOffersPrivateResultSharing(t *testing.T) {
+	res := httptest.NewRecorder()
+	newHandler(demoAnalyzer{}).ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/", nil))
+	body := res.Body.String()
+	for _, want := range []string{"id=\"share\"", "navigator.share", "Không gửi nội dung gốc"} {
+		if !strings.Contains(body, want) {
+			t.Fatalf("home page missing %q", want)
+		}
+	}
+}

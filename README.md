@@ -4,40 +4,66 @@ A Vietnamese, family-oriented scam-interruption web app for AI Riser Vietnam 202
 
 > Scammers manufacture urgency. Khoan Chuyển manufactures a pause.
 
-## Current vertical slice
+## Live application
 
-- Mobile-first Vietnamese PWA-style web UI
-- Text analysis with a safe deterministic demo mode
-- Gemini 3.5 Flash structured-output integration when `GEMINI_API_KEY` is set
-- Explicit uncertainty and non-accusation boundaries
-- Standard-library Go server, embedded static frontend, Cloud Run-ready container
+https://khoan-chuyen-1011704041754.asia-southeast1.run.app
 
-## Run
+## What it does
+
+- Turns suspicious Vietnamese messages or call descriptions into a structured “pause card.”
+- Uses **Vertex AI Gemini 2.5 Flash** to identify observable urgency, payment, secrecy, impersonation, and implausible-return signals.
+- Avoids declaring a person, account, or message criminal or safe.
+- Provides independent verification steps and a privacy-preserving family-share action.
+- Does not store submitted content; the service has no application database.
+
+## Architecture
+
+![Khoan Chuyển architecture](docs/architecture.svg)
+
+The Go service runs on Google Cloud Run and calls Vertex AI through a dedicated runtime service account. No model API key is shipped to the container or browser.
+
+## Run locally
 
 ```bash
 go test ./...
 go run .
 ```
 
-Open <http://localhost:8080>. Without an API key, the app runs in clearly limited demo mode. For Gemini-backed analysis:
+Open <http://localhost:8080>. Without cloud configuration, the app uses a clearly limited deterministic demo analyzer.
+
+For the deployed keyless Vertex AI path, configure:
 
 ```bash
-GEMINI_API_KEY='...' go run .
+GOOGLE_CLOUD_PROJECT='project-id' \
+GOOGLE_CLOUD_REGION='asia-southeast1' \
+GEMINI_MODEL='gemini-2.5-flash' \
+go run .
 ```
 
-Never commit the key. For Cloud Run, store it in Secret Manager and expose it as the `GEMINI_API_KEY` environment variable.
+The runtime requires Google Application Default Credentials with Vertex AI access. Never commit credentials.
 
-## Safety boundaries
+## Safety and privacy boundaries
 
-- The app does not label people, phone numbers, or accounts as criminals.
-- It does not promise that a message is safe or fraudulent.
-- It recommends independently finding official contact channels.
+- No criminal attribution and no promise that content is safe or fraudulent.
+- Independent official-channel verification rather than links or phone numbers from the submitted message.
 - Users are warned not to submit passwords, OTPs, or full account numbers.
-- The current MVP does not store submitted messages.
+- The application does not persist submitted messages.
+- Share output excludes the original submitted message.
+- Requests are size-limited and browser responses include CSP, frame, referrer, and MIME protections.
 
-## Tests
+## Validation and competition materials
+
+- [`docs/validation-protocol.md`](docs/validation-protocol.md) — consented evidence protocol and anonymous result sheet.
+- [`docs/validation-scenarios.md`](docs/validation-scenarios.md) — synthetic risky, benign, and ambiguous test cases.
+- [`docs/submission-package.md`](docs/submission-package.md) — requirement tracker, judge pitch, demo outline, and final checks.
+
+No users, testimonials, impact outcomes, or prevented losses are claimed until real consented validation is completed.
+
+## Quality gates
 
 ```bash
 go test ./...
 go vet ./...
+go build ./...
+curl -fsS http://localhost:8080/readyz
 ```
