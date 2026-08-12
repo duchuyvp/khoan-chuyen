@@ -4,13 +4,18 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"net/url"
 	"strings"
 	"time"
 )
 
 type geminiAnalyzer struct {
 	APIKey  string
+	Project string
+	Region  string
+	Model   string
 	BaseURL string
 	Client  *http.Client
 }
@@ -18,7 +23,19 @@ type geminiAnalyzer struct {
 func (g geminiAnalyzer) Analyze(text string) (pauseCard, error) {
 	baseURL := g.BaseURL
 	if baseURL == "" {
-		baseURL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
+		if g.Project != "" {
+			region := g.Region
+			if region == "" {
+				region = "asia-southeast1"
+			}
+			model := g.Model
+			if model == "" {
+				model = "gemini-2.5-flash"
+			}
+			baseURL = fmt.Sprintf("https://%s-aiplatform.googleapis.com/v1/projects/%s/locations/%s/publishers/google/models/%s:generateContent", region, url.PathEscape(g.Project), region, url.PathEscape(model))
+		} else {
+			baseURL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent"
+		}
 	}
 	client := g.Client
 	if client == nil {
@@ -36,11 +53,11 @@ Nội dung cần kiểm tra:
 ` + text + "\n---"
 
 	requestBody := map[string]any{
-		"contents": []any{map[string]any{"parts": []any{map[string]string{"text": prompt}}}},
+		"contents": []any{map[string]any{"role": "user", "parts": []any{map[string]string{"text": prompt}}}},
 		"generationConfig": map[string]any{
 			"temperature":      0.1,
 			"responseMimeType": "application/json",
-			"responseJsonSchema": map[string]any{
+			"responseSchema": map[string]any{
 				"type": "object",
 				"properties": map[string]any{
 					"shouldPause": map[string]string{"type": "boolean"},
@@ -58,18 +75,30 @@ Nội dung cần kiểm tra:
 	if err != nil {
 		return pauseCard{}, err
 	}
-	req, err := http.NewRequest(http.MethodPost, baseURL+"?key="+g.APIKey, bytes.NewReader(encoded))
+	requestURL := baseURL
+	if g.APIKey != "" {
+		requestURL += "?key=" + url.QueryEscape(g.APIKey)
+	}
+	req, err := http.NewRequest(http.MethodPost, requestURL, bytes.NewReader(encoded))
 	if err != nil {
 		return pauseCard{}, err
 	}
 	req.Header.Set("Content-Type", "application/json")
+	if g.Project != "" {
+		token, err := metadataAccessToken(client)
+		if err != nil {
+			return pauseCard{}, err
+		}
+		req.Header.Set("Authorization", "Bearer "+token)
+	}
 	res, err := client.Do(req)
 	if err != nil {
 		return pauseCard{}, err
 	}
 	defer res.Body.Close()
 	if res.StatusCode != http.StatusOK {
-		return pauseCard{}, fmt.Errorf("gemini status %d", res.StatusCode)
+		body, _ := io.ReadAll(io.LimitReader(res.Body, 4096))
+		return pauseCard{}, fmt.Errorf("gemini status %d: %s", res.StatusCode, strings.TrimSpace(string(body)))
 	}
 	var response struct {
 		Candidates []struct {
@@ -94,4 +123,30 @@ Nội dung cần kiểm tra:
 		return pauseCard{}, fmt.Errorf("gemini returned incomplete card")
 	}
 	return card, nil
+}
+
+func metadataAccessToken(client *http.Client) (string, error) {
+	req, err := http.NewRequest(http.MethodGet, "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token", nil)
+	if err != nil {
+		return "", err
+	}
+	req.Header.Set("Metadata-Flavor", "Google")
+	res, err := client.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("get runtime identity token: %w", err)
+	}
+	defer res.Body.Close()
+	if res.StatusCode != http.StatusOK {
+		return "", fmt.Errorf("metadata token status %d", res.StatusCode)
+	}
+	var payload struct {
+		AccessToken string `json:"access_token"`
+	}
+	if err := json.NewDecoder(res.Body).Decode(&payload); err != nil {
+		return "", err
+	}
+	if payload.AccessToken == "" {
+		return "", fmt.Errorf("metadata returned an empty access token")
+	}
+	return payload.AccessToken, nil
 }

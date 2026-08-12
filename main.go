@@ -75,6 +75,7 @@ func newHandler(a analyzer) http.Handler {
 		}
 		card, err := a.Analyze(input.Text)
 		if err != nil {
+			log.Printf("analysis failed: %v", err)
 			http.Error(w, `{"error":"Không thể phân tích lúc này"}`, http.StatusBadGateway)
 			return
 		}
@@ -85,6 +86,13 @@ func newHandler(a analyzer) http.Handler {
 }
 
 func selectAnalyzer(apiKey string) analyzer {
+	if project := strings.TrimSpace(os.Getenv("GOOGLE_CLOUD_PROJECT")); project != "" {
+		return geminiAnalyzer{
+			Project: project,
+			Region:  strings.TrimSpace(os.Getenv("GOOGLE_CLOUD_REGION")),
+			Model:   strings.TrimSpace(os.Getenv("GEMINI_MODEL")),
+		}
+	}
 	if strings.TrimSpace(apiKey) == "" {
 		return demoAnalyzer{}
 	}

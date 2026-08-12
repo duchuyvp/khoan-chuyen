@@ -65,10 +65,20 @@ func TestHomePageExplainsPauseBeforeTransfer(t *testing.T) {
 }
 
 func TestAnalyzerSelectionUsesGeminiWhenKeyExists(t *testing.T) {
+	t.Setenv("GOOGLE_CLOUD_PROJECT", "")
 	if _, ok := selectAnalyzer("secret").(geminiAnalyzer); !ok {
 		t.Fatal("expected Gemini analyzer")
 	}
 	if _, ok := selectAnalyzer("").(demoAnalyzer); !ok {
 		t.Fatal("expected demo analyzer without key")
+	}
+}
+
+func TestAnalyzerSelectionPrefersVertexRuntimeIdentity(t *testing.T) {
+	t.Setenv("GOOGLE_CLOUD_PROJECT", "project-id")
+	t.Setenv("GOOGLE_CLOUD_REGION", "asia-southeast1")
+	a, ok := selectAnalyzer("developer-key").(geminiAnalyzer)
+	if !ok || a.Project != "project-id" || a.APIKey != "" {
+		t.Fatalf("expected keyless Vertex analyzer, got %#v", a)
 	}
 }
