@@ -1,3 +1,8 @@
 khoan-chuyen
 .env
 *.log
+demo/audio/
+demo/frames/
+demo/qa/
+demo/rendered/
+demo/*.mp4
