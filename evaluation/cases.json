@@ -1,0 +1,32 @@
+[
+  {
+    "id": "A-impersonation",
+    "kind": "risky",
+    "text": "Tôi là cán bộ điều tra. Tài khoản của bạn liên quan một vụ án. Chuyển 45 triệu vào tài khoản an toàn trong hôm nay để xác minh và không được kể cho người thân.",
+    "expected_pause": true
+  },
+  {
+    "id": "B-prize-qr",
+    "kind": "risky",
+    "text": "Chúc mừng bạn nhận điện thoại mới. Quét mã QR và đóng 299.000 đồng phí xử lý trong 10 phút, nếu không phần quà sẽ bị hủy.",
+    "expected_pause": true
+  },
+  {
+    "id": "C-investment",
+    "kind": "risky",
+    "text": "Suất cuối cùng: lợi nhuận cam kết 30% mỗi tháng, không có rủi ro. Chuyển vốn trước 17h hôm nay để được chuyên gia kích hoạt tài khoản.",
+    "expected_pause": true
+  },
+  {
+    "id": "D-benign-family",
+    "kind": "benign",
+    "text": "Mẹ nhắc con chiều nay mua giúp rau và gọi lại khi tan làm nhé.",
+    "expected_pause": false
+  },
+  {
+    "id": "E-official-channel",
+    "kind": "benign",
+    "text": "Hóa đơn tháng này sắp đến hạn. Bạn hãy tự mở ứng dụng của nhà cung cấp hoặc gọi số trên hợp đồng để kiểm tra.",
+    "expected_pause": false
+  }
+]

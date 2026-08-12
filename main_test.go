@@ -66,7 +66,7 @@ func TestHomePageExplainsPauseBeforeTransfer(t *testing.T) {
 
 func TestAnalyzerSelectionUsesGeminiWhenKeyExists(t *testing.T) {
 	t.Setenv("GOOGLE_CLOUD_PROJECT", "")
-	if _, ok := selectAnalyzer("secret").(geminiAnalyzer); !ok {
+	if _, ok := selectAnalyzer("secret").(guardedAnalyzer); !ok {
 		t.Fatal("expected Gemini analyzer")
 	}
 	if _, ok := selectAnalyzer("").(demoAnalyzer); !ok {
@@ -77,8 +77,9 @@ func TestAnalyzerSelectionUsesGeminiWhenKeyExists(t *testing.T) {
 func TestAnalyzerSelectionPrefersVertexRuntimeIdentity(t *testing.T) {
 	t.Setenv("GOOGLE_CLOUD_PROJECT", "project-id")
 	t.Setenv("GOOGLE_CLOUD_REGION", "asia-southeast1")
-	a, ok := selectAnalyzer("developer-key").(geminiAnalyzer)
-	if !ok || a.Project != "project-id" || a.APIKey != "" {
+	guard, ok := selectAnalyzer("developer-key").(guardedAnalyzer)
+	a, innerOK := guard.next.(geminiAnalyzer)
+	if !ok || !innerOK || a.Project != "project-id" || a.APIKey != "" {
 		t.Fatalf("expected keyless Vertex analyzer, got %#v", a)
 	}
 }
@@ -126,6 +127,32 @@ func TestHomePageOffersPrivateResultSharing(t *testing.T) {
 	for _, want := range []string{"id=\"share\"", "navigator.share", "Không gửi nội dung gốc"} {
 		if !strings.Contains(body, want) {
 			t.Fatalf("home page missing %q", want)
+		}
+	}
+}
+
+func TestClearEverydayMessagesDoNotTriggerPause(t *testing.T) {
+	cases := []string{
+		"Mẹ nhắc con chiều nay mua giúp rau và gọi lại khi tan làm nhé.",
+		"Hóa đơn tháng này sắp đến hạn. Bạn hãy tự mở ứng dụng của nhà cung cấp hoặc gọi số trên hợp đồng để kiểm tra.",
+	}
+	for _, text := range cases {
+		if hasConcreteRiskSignal(text) {
+			t.Errorf("unexpected risk signal in %q", text)
+		}
+	}
+}
+
+func TestConcreteTransferRiskSignalsAreDetected(t *testing.T) {
+	cases := []string{
+		"Quét mã QR và đóng phí trong 10 phút.",
+		"Chuyển ngay 45 triệu vào tài khoản an toàn và không được kể cho ai.",
+		"Cam kết lợi nhuận 30% mỗi tháng, không có rủi ro.",
+		"Đọc mã OTP để xác minh tài khoản.",
+	}
+	for _, text := range cases {
+		if !hasConcreteRiskSignal(text) {
+			t.Errorf("missing risk signal in %q", text)
 		}
 	}
 }

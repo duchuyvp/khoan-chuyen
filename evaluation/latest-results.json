@@ -1,0 +1,69 @@
+{
+  "generated_at": "2026-08-12T07:57:23.416531+00:00",
+  "base_url": "https://khoan-chuyen-1011704041754.asia-southeast1.run.app",
+  "method": "Synthetic safety regression; not real-user impact evidence.",
+  "passed": 5,
+  "total": 5,
+  "results": [
+    {
+      "id": "A-impersonation",
+      "kind": "risky",
+      "expected_pause": true,
+      "actual_pause": true,
+      "correct": true,
+      "risk": "Rất cao",
+      "summary": "Tin nhắn tự xưng là cán bộ điều tra, thông báo tài khoản của bạn liên quan đến một vụ án và yêu cầu chuyển 45 triệu đồng vào một 'tài khoản an toàn' ngay trong hôm nay để xác minh, đồng thời cấm bạn kể cho người thân.",
+      "signal_count": 5,
+      "step_count": 3,
+      "latency_ms": 4445
+    },
+    {
+      "id": "B-prize-qr",
+      "kind": "risky",
+      "expected_pause": true,
+      "actual_pause": true,
+      "correct": true,
+      "risk": "Cao",
+      "summary": "Tin nhắn thông báo nhận quà tặng điện thoại mới, yêu cầu quét mã QR và thanh toán phí xử lý trong thời gian giới hạn.",
+      "signal_count": 4,
+      "step_count": 3,
+      "latency_ms": 4214
+    },
+    {
+      "id": "C-investment",
+      "kind": "risky",
+      "expected_pause": true,
+      "actual_pause": true,
+      "correct": true,
+      "risk": "Rủi ro cao",
+      "summary": "Thông tin về cơ hội đầu tư với lợi nhuận cam kết cao bất thường, không rủi ro và yêu cầu chuyển tiền gấp trong thời gian giới hạn.",
+      "signal_count": 5,
+      "step_count": 3,
+      "latency_ms": 4580
+    },
+    {
+      "id": "D-benign-family",
+      "kind": "benign",
+      "expected_pause": false,
+      "actual_pause": false,
+      "correct": true,
+      "risk": "Chưa thấy tín hiệu rõ",
+      "summary": "Nội dung chưa có yêu cầu chuyển tiền, mã QR, OTP, giữ bí mật hoặc lợi nhuận bất thường. Hãy tiếp tục dùng kênh chính thức nếu cần xác minh.",
+      "signal_count": 1,
+      "step_count": 3,
+      "latency_ms": 12105
+    },
+    {
+      "id": "E-official-channel",
+      "kind": "benign",
+      "expected_pause": false,
+      "actual_pause": false,
+      "correct": true,
+      "risk": "Chưa thấy tín hiệu rõ",
+      "summary": "Nội dung chưa có yêu cầu chuyển tiền, mã QR, OTP, giữ bí mật hoặc lợi nhuận bất thường. Hãy tiếp tục dùng kênh chính thức nếu cần xác minh.",
+      "signal_count": 1,
+      "step_count": 3,
+      "latency_ms": 5594
+    }
+  ]
+}

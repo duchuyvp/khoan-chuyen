@@ -60,6 +60,44 @@ func (demoAnalyzer) Analyze(text string) (pauseCard, error) {
 	}, nil
 }
 
+func hasConcreteRiskSignal(text string) bool {
+	lower := strings.ToLower(text)
+	for _, phrase := range []string{
+		"chuyển tiền", "chuyển ngay", "chuyển vốn", "tài khoản an toàn",
+		"quét mã qr", "mã qr", "đóng phí", "nộp phí", "otp", "mật khẩu",
+		"không được kể", "giữ bí mật", "lợi nhuận", "không có rủi ro",
+	} {
+		if strings.Contains(lower, phrase) {
+			return true
+		}
+	}
+	return false
+}
+
+type guardedAnalyzer struct {
+	next analyzer
+}
+
+func (g guardedAnalyzer) Analyze(text string) (pauseCard, error) {
+	card, err := g.next.Analyze(text)
+	if err != nil {
+		return pauseCard{}, err
+	}
+	if !hasConcreteRiskSignal(text) {
+		card.ShouldPause = false
+		card.Risk = "Chưa thấy tín hiệu rõ"
+		card.Summary = "Nội dung chưa có yêu cầu chuyển tiền, mã QR, OTP, giữ bí mật hoặc lợi nhuận bất thường. Hãy tiếp tục dùng kênh chính thức nếu cần xác minh."
+		card.Signals = []string{"Chưa quan sát thấy tín hiệu giao dịch rủi ro cụ thể trong nội dung được cung cấp."}
+		card.NextSteps = []string{
+			"Không cần hành động vội chỉ vì một tin nhắn.",
+			"Nếu nội dung liên quan tài khoản hoặc hóa đơn, tự mở ứng dụng hoặc website chính thức.",
+			"Không cung cấp mật khẩu, OTP hoặc thông tin tài khoản qua tin nhắn.",
+		}
+		card.Disclaimer = "Khoan Chuyển không thể xác nhận một tin nhắn là an toàn. Kết quả này chỉ cho biết chưa thấy tín hiệu giao dịch rủi ro cụ thể trong nội dung đã nhập."
+	}
+	return card, nil
+}
+
 func newHandler(a analyzer) http.Handler {
 	mux := http.NewServeMux()
 	staticRoot, err := fs.Sub(staticFiles, "static")
@@ -105,16 +143,16 @@ func securityHeaders(next http.Handler) http.Handler {
 
 func selectAnalyzer(apiKey string) analyzer {
 	if project := strings.TrimSpace(os.Getenv("GOOGLE_CLOUD_PROJECT")); project != "" {
-		return geminiAnalyzer{
+		return guardedAnalyzer{next: geminiAnalyzer{
 			Project: project,
 			Region:  strings.TrimSpace(os.Getenv("GOOGLE_CLOUD_REGION")),
 			Model:   strings.TrimSpace(os.Getenv("GEMINI_MODEL")),
-		}
+		}}
 	}
 	if strings.TrimSpace(apiKey) == "" {
 		return demoAnalyzer{}
 	}
-	return geminiAnalyzer{APIKey: apiKey}
+	return guardedAnalyzer{next: geminiAnalyzer{APIKey: apiKey}}
 }
 
 func main() {

@@ -1,0 +1,8 @@
+{
+  "scene1": "Kẻ lừa đảo tạo ra sự vội vàng: chuyển ngay, quét ngay, đừng kể cho ai. Khoan Chuyển tạo ra một nhịp dừng, ngay trước khi tiền rời khỏi tài khoản.",
+  "scene2": "Người dùng dán hoặc mô tả một tin nhắn đáng ngờ. Trong ví dụ này, họ bất ngờ trúng điện thoại, phải quét mã QR, đóng phí trong mười phút và giữ bí mật.",
+  "scene3": "Gemini không kết luận ai là tội phạm. Nó tạo một thẻ tạm dừng có cấu trúc: các tín hiệu quan sát được, mức rủi ro, và ba bước xác minh độc lập. Người dùng có thể chia sẻ cảnh báo với người thân mà không gửi nội dung gốc.",
+  "scene4": "Ứng dụng Go chạy công khai trên Cloud Run. Nội dung được gửi đến Gemini hai phẩy năm Flash trên Vertex AI bằng runtime identity, không có API key trong trình duyệt hay container. Dịch vụ không có cơ sở dữ liệu và không lưu tin nhắn.",
+  "scene5": "Một bộ kiểm thử tổng hợp có thể tái lập đã phát hiện hai cảnh báo sai với tin nhắn lành tính. Sau khi thêm guardrail bảo thủ, cả ba tình huống rủi ro được tạm dừng và hai tình huống lành tính không bị báo động. Đây là kiểm thử kỹ thuật, không phải bằng chứng tác động người dùng.",
+  "scene6": "Scammer tạo ra sự vội vàng. Khoan Chuyển tạo ra một nhịp dừng."
+}
