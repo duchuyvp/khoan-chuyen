@@ -22,6 +22,15 @@ A short, non-accusatory Gemini risk card can create a useful pause before transf
 8. Ask three 1–5 ratings: clarity, usefulness, and confidence in the next step.
 9. Record one short anonymous quote only with explicit permission.
 
+## Remote self-guided procedure
+
+- Participant entry point: https://khoan-chuyen-1011704041754.asia-southeast1.run.app/validate.html
+- Anonymous response form: https://docs.google.com/forms/d/e/1FAIpQLSfvxff1fNrmLqRnbqfRUwEqCYEEQZ84Exkvjdh9YyH114WgGQ/viewform
+- The page assigns one of five synthetic scenarios and preserves the order: decide before → use the app → decide after → submit feedback.
+- The form is public without sign-in, does not collect email/name/phone, requires the core consent and measurement fields, and leaves the permissioned anonymous quote optional.
+- Exclude and delete any response that selects **Không đồng ý**. Never analyze it as participant evidence.
+- Do not recruit minors. Do not ask participants to test with a real suspicious message or real transaction.
+
 ## Minimum useful sample
 
 - Goal: 10 consented sessions.
@@ -50,3 +59,5 @@ A short, non-accusatory Gemini risk card can create a useful pause before transf
 - Keep quotes anonymous and permissioned.
 - Report misses and confusion, not only positive results.
 - Never claim prevented financial loss unless independently verifiable and consented.
+- Keep synthetic regression and participant evidence in separate sections and denominators.
+- Preserve critical and negative feedback; do not report only favorable responses.

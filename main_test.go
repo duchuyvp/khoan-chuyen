@@ -64,6 +64,27 @@ func TestHomePageExplainsPauseBeforeTransfer(t *testing.T) {
 	}
 }
 
+func TestValidationPageUsesOnlySyntheticScenariosAndAnonymousFeedback(t *testing.T) {
+	res := httptest.NewRecorder()
+	newHandler(demoAnalyzer{}).ServeHTTP(res, httptest.NewRequest(http.MethodGet, "/validate.html", nil))
+
+	if res.Code != http.StatusOK {
+		t.Fatalf("status = %d", res.Code)
+	}
+	body := res.Body.String()
+	for _, want := range []string{
+		"Thử nghiệm ẩn danh",
+		"Tình huống giả lập",
+		"Không nhập tên, email, số điện thoại",
+		"Ghi lại lựa chọn trước khi xem kết quả",
+		"docs.google.com/forms",
+	} {
+		if !strings.Contains(body, want) {
+			t.Errorf("validation page missing %q", want)
+		}
+	}
+}
+
 func TestAnalyzerSelectionUsesGeminiWhenKeyExists(t *testing.T) {
 	t.Setenv("GOOGLE_CLOUD_PROJECT", "")
 	if _, ok := selectAnalyzer("secret").(guardedAnalyzer); !ok {

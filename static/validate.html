@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Thử nghiệm ẩn danh — Khoan Chuyển</title>
+  <meta name="description" content="Thử nghiệm ẩn danh, tự nguyện với các tình huống giả lập của Khoan Chuyển.">
+  <style>
+    :root{--ink:#10120e;--green:#9fe870;--deep:#163300;--paper:#f7f7f2;--muted:#5d625b;--line:#d8dbd4}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 system-ui,sans-serif}main{max-width:760px;margin:auto;padding:28px 20px 64px}h1{font-size:clamp(38px,8vw,66px);line-height:.95;letter-spacing:-.05em;margin:30px 0 16px}h2{margin-top:0}.card{background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;margin:18px 0}.notice{background:#e9f8df;border-color:#b7df9e}.scenario{font-size:18px;font-weight:650;border-left:5px solid var(--green);padding-left:16px}.steps{counter-reset:step;display:grid;gap:12px;padding:0}.steps li{list-style:none;display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start}.steps li:before{counter-increment:step;content:counter(step);display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--green);color:var(--deep);font-weight:800}.actions{display:grid;gap:10px}.button{display:block;text-align:center;text-decoration:none;border-radius:999px;padding:14px 18px;font-weight:800;background:var(--green);color:var(--deep)}.button.secondary{background:#eef0eb;color:var(--ink)}small,.muted{color:var(--muted)}code{word-break:break-all}button{font:inherit;cursor:pointer;border:0}.hidden{display:none}@media(min-width:640px){.actions{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body><main>
+  <p><a href="/">← Khoan Chuyển</a></p>
+  <h1>Thử nghiệm ẩn danh</h1>
+  <p class="muted">Nghiên cứu tự nguyện 5–7 phút cho nguyên mẫu an toàn chuyển tiền.</p>
+
+  <section class="card notice">
+    <h2>Trước khi bắt đầu</h2>
+    <ul>
+      <li>Chỉ sử dụng <strong>tình huống giả lập</strong> bên dưới.</li>
+      <li><strong>Không nhập tên, email, số điện thoại</strong>, số tài khoản, OTP, mật khẩu hoặc tin nhắn thật.</li>
+      <li>Bạn phải từ 18 tuổi, có thể dừng bất cứ lúc nào và không cần cung cấp danh tính.</li>
+      <li>Kết quả chỉ được báo cáo tổng hợp; không có giao dịch tiền thật.</li>
+    </ul>
+  </section>
+
+  <section class="card">
+    <h2 id="scenario-title">Tình huống giả lập</h2>
+    <p class="scenario" id="scenario"></p>
+    <p><small>Mã tình huống: <strong id="scenario-code"></strong>. Hãy nhớ mã này để chọn đúng trong biểu mẫu.</small></p>
+    <button class="button secondary" id="another" type="button">Chọn tình huống khác</button>
+  </section>
+
+  <section class="card">
+    <h2>Thực hiện theo đúng thứ tự</h2>
+    <ol class="steps">
+      <li><span><strong>Đọc tình huống.</strong> Tự quyết định: hành động/chuyển tiền, tạm dừng, xác minh độc lập hay không chắc.</span></li>
+      <li><span><strong>Ghi lại lựa chọn trước khi xem kết quả.</strong> Đừng thay đổi câu trả lời “trước” sau khi dùng ứng dụng.</span></li>
+      <li><span>Sao chép tình huống, mở ứng dụng và dán vào ô phân tích. Không dùng nội dung thật.</span></li>
+      <li><span>Đọc kết quả, nêu một bước xác minh độc lập nếu có, rồi hoàn thành biểu mẫu ẩn danh.</span></li>
+    </ol>
+    <div class="actions">
+      <button class="button secondary" id="copy" type="button">Sao chép tình huống</button>
+      <a class="button" href="/" target="_blank" rel="noopener">Mở ứng dụng</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Gửi phản hồi ẩn danh</h2>
+    <p>Biểu mẫu không yêu cầu tên, email hay số điện thoại. Trích dẫn là tùy chọn và chỉ được dùng ẩn danh khi bạn tự nhập.</p>
+    <a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLSfvxff1fNrmLqRnbqfRUwEqCYEEQZ84Exkvjdh9YyH114WgGQ/viewform?usp=header" target="_blank" rel="noopener noreferrer">Mở biểu mẫu phản hồi</a>
+  </section>
+</main>
+<script>
+const scenarios=[
+ {code:'A — Mạo danh cơ quan',text:'Tôi là cán bộ điều tra. Tài khoản của bạn liên quan một vụ án. Chuyển 45 triệu vào tài khoản an toàn trong hôm nay để xác minh và không được kể cho người thân.'},
+ {code:'B — Trúng thưởng và phí',text:'Chúc mừng bạn nhận điện thoại mới. Quét mã QR và đóng 299.000 đồng phí xử lý trong 10 phút, nếu không phần quà sẽ bị hủy.'},
+ {code:'C — Đầu tư lợi nhuận cao',text:'Suất cuối cùng: lợi nhuận cam kết 30% mỗi tháng, không có rủi ro. Chuyển vốn trước 17h hôm nay để được chuyên gia kích hoạt tài khoản.'},
+ {code:'D — Tin nhắn lành tính',text:'Mẹ nhắc con chiều nay mua giúp rau và gọi lại khi tan làm nhé.'},
+ {code:'E — Nhắc thanh toán có xác minh',text:'Hóa đơn tháng này sắp đến hạn. Bạn hãy tự mở ứng dụng của nhà cung cấp hoặc gọi số trên hợp đồng để kiểm tra.'}
+];
+let current;
+function choose(){current=scenarios[Math.floor(Math.random()*scenarios.length)];document.querySelector('#scenario').textContent=current.text;document.querySelector('#scenario-code').textContent=current.code}
+document.querySelector('#another').addEventListener('click',choose);
+document.querySelector('#copy').addEventListener('click',async e=>{await navigator.clipboard.writeText(current.text);e.currentTarget.textContent='Đã sao chép'});
+choose();
+</script></body></html>

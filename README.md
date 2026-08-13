@@ -4,9 +4,17 @@ A Vietnamese, family-oriented scam-interruption web app for AI Riser Vietnam 202
 
 > Scammers manufacture urgency. Khoan Chuyển manufactures a pause.
 
-## Live application
+## Public application
 
 https://khoan-chuyen-1011704041754.asia-southeast1.run.app
+
+## Anonymous validation
+
+The consented self-guided study uses only synthetic scenarios and collects no name, email, phone number, account number, OTP, password, or raw real-world message:
+
+https://khoan-chuyen-1011704041754.asia-southeast1.run.app/validate.html
+
+The protocol and evidence boundaries are documented in [`docs/validation-protocol.md`](docs/validation-protocol.md). No participant outcomes are claimed until genuine responses exist.
 
 ## What it does
 
