@@ -11,9 +11,9 @@ Status values: **ready**, **needs owner**, **needs evidence**, **not started**.
 | Google AI Studio artifact | ready | Public deployment: https://khoan-chuyen.ai.studio/ — signed-out risky and benign flows verified; AI Studio project: https://aistudio.google.com/apps/0aa23848-d343-4026-ab3b-0542300e8cc7?showPreview=true&showAssistant=false |
 | Real-user evidence | needs evidence | Run `docs/validation-protocol.md`; record only consented anonymous results |
 | Public YouTube demo | ready | https://youtu.be/sLm0sdW-KY8 — anonymous watch + oEmbed HTTP 200 verified; title and channel matched |
-| Public social journey post | ready | LinkedIn skipped at entrant request; approved Facebook text published as Nguyễn Đức Huy with audience **Công khai** and verified in the authenticated feed |
-| Completion form | needs owner | Submit only after all public URLs pass anonymous checks |
-| Confirmation receipt | needs owner | Save official success page/email or submission ID |
+| Public social journey post | ready | LinkedIn skipped at entrant request; public Facebook post by Nguyễn Đức Huy: https://www.facebook.com/lunalovegood2367890123456/posts/pfbid0KFQesSqNXG5iVefCnN9mPAH4kVckftc3mfGeaPyaPmbHkCdYonskRsjTkGJPJcXil |
+| Completion form | ready | Official AIRiser completion form submitted as Nguyễn Đức Huy using `duchuyvp123@gmail.com` on 2026-08-13 |
+| Confirmation receipt | ready | Google Forms displayed “Thông tin của bạn đã được ghi nhận”; receipt email received from `forms-receipts-noreply@google.com` at 2026-08-13 04:28 UTC |
 
 ## Judge-facing pitch
 
