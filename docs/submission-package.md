@@ -7,11 +7,11 @@ Status values: **ready**, **needs owner**, **needs evidence**, **not started**.
 | Public Cloud Run application | ready | https://khoan-chuyen-1011704041754.asia-southeast1.run.app |
 | Product built with Google AI | ready | Vertex AI Gemini 2.5 Flash, structured output, runtime identity |
 | Architecture visual | ready | `docs/architecture.svg` |
-| Public source repository | needs owner | Create/select repository, then push reviewed commits |
-| Google AI Studio share link | not started | Create competition-required AI Studio artifact and make it public |
+| Public source repository | ready | https://github.com/duchuyvp/khoan-chuyen |
+| Google AI Studio artifact | ready | Public deployment: https://khoan-chuyen.ai.studio/ — signed-out risky and benign flows verified; AI Studio project: https://aistudio.google.com/apps/0aa23848-d343-4026-ab3b-0542300e8cc7?showPreview=true&showAssistant=false |
 | Real-user evidence | needs evidence | Run `docs/validation-protocol.md`; record only consented anonymous results |
-| Public YouTube demo | not started | Record after evidence and final UI freeze |
-| LinkedIn journey post | needs owner | Draft after demo URL exists; owner publishes from own account |
+| Public YouTube demo | ready | https://youtu.be/sLm0sdW-KY8 — anonymous watch + oEmbed HTTP 200 verified; title and channel matched |
+| Public social journey post | ready | LinkedIn skipped at entrant request; approved Facebook text published as Nguyễn Đức Huy with audience **Công khai** and verified in the authenticated feed |
 | Completion form | needs owner | Submit only after all public URLs pass anonymous checks |
 | Confirmation receipt | needs owner | Save official success page/email or submission ID |
 
@@ -43,6 +43,18 @@ Before submitting, open every URL in a signed-out browser and verify:
 - app loads and completes live analysis;
 - AI Studio link is public;
 - YouTube video is public;
-- LinkedIn post is public;
+- approved Facebook journey post is public (LinkedIn intentionally skipped);
 - repository/README is public if included;
 - no API key, OTP, participant identity, or private project data appears.
+
+## Google AI Studio publication verification
+
+- App ID: `0aa23848-d343-4026-ab3b-0542300e8cc7`
+- Public URL: https://khoan-chuyen.ai.studio/
+- AI Studio project URL: https://aistudio.google.com/apps/0aa23848-d343-4026-ab3b-0542300e8cc7?showPreview=true&showAssistant=false
+- Published status: **Ready**
+- Public HTTP check: `200`; no sign-in required
+- Risky synthetic check: rendered **CẢNH BÁO CAO**, three warning signals, uncertainty language, and exactly three independent verification steps
+- Benign synthetic check: rendered **LƯU Ý XÁC MINH**, explicitly noted no financial request, and retained exactly three precautionary steps
+- Cost control: Gemini API monthly spend cap set to `₫100,000` on project `khoan-chuyen-airiser-2026`
+- Credential boundary: AI Studio created a platform-managed API key restricted to `generativelanguage.googleapis.com`; its value was not revealed or copied and was absent from delivered HTML
